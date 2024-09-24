@@ -66,7 +66,7 @@ def calculate_first_and_last_subnets(ip, cidr_prefix):
     network = ipaddress.IPv4Network(f"{ip}/{cidr_prefix}", strict=False)
     subnets = list(network.subnets(new_prefix=cidr_prefix + 1))
 
-    # החזרת רק את התתי-רשתות הראשונה והאחרונה
+    
     return subnets[:1] + subnets[-1:]
 
 
