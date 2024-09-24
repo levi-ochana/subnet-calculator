@@ -86,10 +86,10 @@ def main():
 
     if partition_type == 'host':
         num_hosts = get_valid_number("Enter number of hosts: ")
-        cidr_prefix = 32 - (num_hosts + 2).bit_length()  # Calculate new CIDR prefix
+        cidr_prefix = 32 - (num_hosts + 2).bit_length()  
     else:
         num_subnets = get_valid_number("Enter number of subnets: ")
-        cidr_prefix = 24 + num_subnets.bit_length()  # Calculate new CIDR prefix
+        cidr_prefix = 24 + num_subnets.bit_length()  
 
     num_hosts, num_subnets = calculate_hosts_and_subnets(cidr_prefix)
     network_address, broadcast_address = calculate_network_and_broadcast(ip, cidr_prefix)
