@@ -61,7 +61,13 @@ def start_calculations():
 
     cidr_input = cidr_entry.get().strip()  # Get user input for CIDR
     if cidr_input:  # If CIDR is provided
-        cidr_prefix = int(cidr_input)  # Convert to integer
+        try:
+            cidr_prefix = int(cidr_input)  # Convert to integer
+            if cidr_prefix < 0 or cidr_prefix > 32:
+                raise ValueError("CIDR must be between 0 and 32.")
+        except ValueError:
+            messagebox.showerror("Error", "Please enter a valid CIDR value (0-32).")  # Show error for invalid input
+            return
     else:  # If CIDR is not provided
         cidr_prefix = calculate_subnet_mask(ip)  # Calculate default CIDR based on the IP
 
@@ -71,6 +77,8 @@ def start_calculations():
     if partition_type == 'host':
         try:
             num_hosts = int(input_entry.get().strip())  # Get number of hosts from user
+            if num_hosts <= 0:
+                raise ValueError("Number of hosts must be greater than 0.")
             cidr_prefix = 32 - (num_hosts + 2).bit_length()  # Calculate the CIDR for the specified number of hosts
         except ValueError:
             messagebox.showerror("Error", "Please enter a valid number of hosts.")  # Show error for invalid input
@@ -80,6 +88,8 @@ def start_calculations():
     elif partition_type == 'subnet':
         try:
             num_subnets = int(input_entry.get().strip())  # Get number of subnets from user
+            if num_subnets <= 0:
+                raise ValueError("Number of subnets must be greater than 0.")
             cidr_prefix = 24 + num_subnets.bit_length()  # Calculate CIDR based on number of subnets
         except ValueError:
             messagebox.showerror("Error", "Please enter a valid number of subnets.")  # Show error for invalid input
@@ -144,18 +154,18 @@ tk.Label(root, text="Enter number of hosts/subnets:").grid(row=4, column=0, padx
 input_entry = tk.Entry(root)  # Create an entry field for hosts/subnets input
 input_entry.grid(row=4, column=1, padx=10, pady=5)
 
-# Calculate button to trigger the calculations
-calculate_button = tk.Button(root, text="Calculate", command=start_calculations)  # Button for calculations
-calculate_button.grid(row=5, columnspan=2, pady=10)  # Position the button
+# Button to start calculations
+calculate_button = tk.Button(root, text="Calculate", command=start_calculations)
+calculate_button.grid(row=5, columnspan=2, padx=10, pady=10)  # Position the calculate button
 
-# New button to show explanation of the program
-explanation_button = tk.Button(root, text="Show Explanation", command=show_explanation)  # Button to show explanation
-explanation_button.grid(row=6, columnspan=2, pady=5)  # Position the button
+# Label to display results
+result_text = tk.StringVar()  # Create a StringVar to hold the result text
+result_label = tk.Label(root, textvariable=result_text, justify=tk.LEFT)
+result_label.grid(row=6, columnspan=2, padx=10, pady=10)  # Position the result label
 
-# Label to display the results of calculations
-result_text = tk.StringVar()  # String variable to hold the result text
-result_label = tk.Label(root, textvariable=result_text, justify="left")  # Label to show results
-result_label.grid(row=7, columnspan=2, padx=10, pady=10)  # Position the result label
+# Button to show explanation of the program
+explanation_button = tk.Button(root, text="Program Explanation", command=show_explanation)
+explanation_button.grid(row=7, columnspan=2, padx=10, pady=10)  # Position the explanation button
 
-# Start the main loop of the Tkinter application
+# Run the application
 root.mainloop()
