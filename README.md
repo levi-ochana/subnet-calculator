@@ -22,10 +22,16 @@ The Subnet Calculator is a Python program with a graphical user interface (GUI) 
 5. **Click Calculate**: Press the "Calculate" button to view the subnetting details.
 
 ## Example
+### Input:
 - **IP**: `192.168.1.1`
 - **CIDR**: `24` (Optional)
 - **Partition by**: Hosts
 - **Number of Hosts**: `50`
+### Output:
+- **Number of hosts**: `62`
+- **Number of subnets**: `1`
+- **Network address**: `192.168.1.0`
+- **Broadcast address**: `192.168.1.255`
 
 ## Explanation
 The program provides detailed calculations such as:
